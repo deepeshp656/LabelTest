@@ -17,4 +17,5 @@ jobs:
 
     steps:
     - run: echo successfull
+      if: ${{!contains(github.event.pull_request.labels.*.name, 'bug')}}
 
