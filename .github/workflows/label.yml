@@ -35,6 +35,7 @@ jobs:
         if: ${{contains(github.event.pull_request.labels.*.name, 'frontend')}}
 
       - uses: hmarr/auto-approve-action@v2.0.0
+        if: ${{contains(github.event.pull_request.labels.*.name, 'bug')}}
 
         with:
          github-token: "${{ secrets.GITHUB_TOKEN }}"
