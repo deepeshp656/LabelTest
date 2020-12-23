@@ -45,7 +45,7 @@ jobs:
             GITHUB_CONTEXT: ${{ toJson(github) }}
        
         run: echo Add other actions to build
-        if: contains(github.event.pull_request.labels.*.name, 'auto-run')
+        if: contains(github.event.pull_request.labels.*.name, 'frontend')
   test2:
     needs: test
     runs-on: ubuntu-latest
