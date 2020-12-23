@@ -26,7 +26,7 @@ jobs:
       - name: label check
         env:
             GITHUB_CONTEXT: ${{ toJson(github) }}
-        if: contains(github.event.pull_request.labels.*.name, 'frontend')
+        if: contains(github.event.pull_request.labels.*.name, 'auto-run')
         run: echo Add other actions to build,
 
             
