@@ -21,7 +21,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+        if: contains(github.event.pull_request.labels.*.name, 'auto-run')
       # Runs a single command using the runners shell
       - name: label check
         env:
