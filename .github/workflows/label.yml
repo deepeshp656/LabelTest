@@ -1,0 +1,42 @@
+# This workflow will triage pull requests and apply a label based on the
+# paths that are modified in the pull request.
+#
+# To use this workflow, you will need to set up a .github/labeler.yml
+# file with configuration.  For more information, see:
+# https://github.com/actions/labeler
+
+name: Labeler
+on: [pull_request]
+
+jobs:
+  
+    
+  label:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/labeler@v3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      
+      
+ 
+      
+  autoapprove:
+    
+    needs: label
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+        if: ${{!contains(github.event.pull_request.labels.*.name, 'bug')}}
+
+      - uses: hmarr/auto-approve-action@v2.0.0
+
+        with:
+         github-token: "${{ secrets.GITHUB_TOKEN }}"
+        
+
