@@ -19,6 +19,7 @@ jobs:
           # get back to the merge commit
           git checkout ${{ github.sha }}
       - name: All changed files and puttinng it in file and will be processed
+        id: Pattern
         run: |
           
             CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- aws/approle)       
@@ -29,7 +30,8 @@ jobs:
                 do
                    if [[ !("$i" == "aws/approle/approle"* )]]; then
                       echo "files changed are not supported for auto approval will exit" 
-                      exit 0                 
+                      echo "::set-output name=Check::False"
+                      exit 0               
                    fi
                   
                 done
@@ -47,20 +49,21 @@ jobs:
                 grep -v '^\-\-' File >FilterFile
             else
                 echo "files changed outside valid directory"
-                exit 1
+                exit 0
             fi
+            echo "::set-output name=Check::True"
              
             #cat FilterFile
             if grep -q '^\-' FilterFile; then
                 echo "PR contains files with deleted or modified lines!!"
-                exit 1
+                exit 0
             else
-                echo "PR save for labeling and Auto approve!!"
+                echo "PR safe for labeling and Auto approve!!"
             fi
   
       - name: 'Labeling PR'
         uses: actions/github-script@0.3.0
-        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
+        if: steps.Pattern.outputs.Check == 'True'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -72,22 +75,23 @@ jobs:
             })
       - name: Approve  
         uses: hmarr/auto-approve-action@v2.0.0
-        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
+        if: steps.Pattern.outputs.Check == 'True'
         with:
          github-token: "${{ secrets.GITHUB_TOKEN }}"
           
       - name: 'Comment On PR'
         uses: actions/github-script@0.3.0
-        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
+        if: steps.Pattern.outputs.Check == 'True'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
             github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });
       - uses: actions/checkout@master
+        if: steps.Pattern.outputs.Check == 'True'
       - name: merge
         uses: framer/merge-approved-pull-request-action@master
-        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
+        if: steps.Pattern.outputs.Check == 'True'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_LABEL: auto-run
