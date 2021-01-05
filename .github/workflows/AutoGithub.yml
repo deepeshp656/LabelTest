@@ -47,13 +47,13 @@ jobs:
                 grep -v '^\-\-' File >FilterFile
             else
                 echo "files changed outside valid directory"
-                exit 1
+                exit 0
             fi
              
             #cat FilterFile
             if grep -q '^\-' FilterFile; then
                 echo "PR contains files with deleted or modified lines!!"
-                exit 1
+                exit 0
             else
                 echo "PR save for labeling and Auto approve!!"
             fi
@@ -85,6 +85,7 @@ jobs:
             const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
             github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });
       - uses: actions/checkout@master
+        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
       - name: merge
         uses: framer/merge-approved-pull-request-action@master
         if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
