@@ -30,7 +30,7 @@ jobs:
                 do
                    if [[ !("$i" == "aws/approle/approle"* )]]; then
                       echo "files changed are not supported for auto approval will exit" 
-                      echo "::set-output name=Check::Other"
+                      echo "::set-output name=Check::Others files were changed"
                       exit 0               
                    fi
                   
@@ -49,7 +49,7 @@ jobs:
                 grep -v '^\-\-' File >FilterFile
             else
                 echo "files changed outside valid directory"
-                echo "::set-output name=Check::Invalid"
+                echo "::set-output name=Check::change made at Invalid location"
                 exit 0
             fi
             echo "::set-output name=Check::True"
@@ -57,7 +57,7 @@ jobs:
             #cat FilterFile
             if grep -q '^\-' FilterFile; then
                 echo "PR contains files with deleted or modified lines!!"
-                echo "::set-output name=Check::Deleted"
+                echo "::set-output name=Check::Lines were Deleted or Modified"
                 exit 0
             else
                 echo "PR safe for labeling and Auto approve!!"
