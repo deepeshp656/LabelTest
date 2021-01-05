@@ -19,6 +19,7 @@ jobs:
           # get back to the merge commit
           git checkout ${{ github.sha }}
       - name: All changed files and puttinng it in file and will be processed
+        id: Pattern
         run: |
           
             CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- aws/approle)       
@@ -29,7 +30,8 @@ jobs:
                 do
                    if [[ !("$i" == "aws/approle/approle"* )]]; then
                       echo "files changed are not supported for auto approval will exit" 
-                      exit 1                 
+                      echo "::set-output name=Check::False"
+                      exit 0               
                    fi
                   
                 done
@@ -49,6 +51,7 @@ jobs:
                 echo "files changed outside valid directory"
                 exit 0
             fi
+            echo "::set-output name=Check::True"
              
             #cat FilterFile
             if grep -q '^\-' FilterFile; then
@@ -60,7 +63,7 @@ jobs:
   
       - name: 'Labeling PR'
         uses: actions/github-script@0.3.0
-        if: steps.Check.outputs.status != 'error'
+        if: steps.Pattern.outputs.Check == 'True'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
