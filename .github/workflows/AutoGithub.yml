@@ -30,7 +30,7 @@ jobs:
                 do
                    if [[ !("$i" == "aws/approle/approle"* )]]; then
                       echo "files changed are not supported for auto approval will exit" 
-                      echo "::set-output name=Check::False"
+                      echo "::set-output name=Check::Other"
                       exit 0               
                    fi
                   
@@ -49,6 +49,7 @@ jobs:
                 grep -v '^\-\-' File >FilterFile
             else
                 echo "files changed outside valid directory"
+                echo "::set-output name=Check::Invalid"
                 exit 0
             fi
             echo "::set-output name=Check::True"
@@ -56,11 +57,21 @@ jobs:
             #cat FilterFile
             if grep -q '^\-' FilterFile; then
                 echo "PR contains files with deleted or modified lines!!"
+                echo "::set-output name=Check::Deleted"
                 exit 0
             else
                 echo "PR safe for labeling and Auto approve!!"
             fi
   
+      - name: 'Comment On PR'
+        uses: actions/github-script@0.3.0
+        if: steps.Pattern.outputs.Check != 'True'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |            
+            const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
+            github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! PR cannot been approved because ${{steps.Pattern.outputs.Check}} ' });
+
       - name: 'Labeling PR'
         uses: actions/github-script@0.3.0
         if: steps.Pattern.outputs.Check == 'True'
