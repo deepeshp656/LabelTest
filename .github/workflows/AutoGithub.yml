@@ -1,0 +1,94 @@
+name: GithubAuto
+on: [pull_request]
+jobs:
+  Check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      # - run: git ls-remote
+      - name: Checkout head and target branches
+        id: Check
+        run: |
+          git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
+          git fetch --no-tags --depth=1 origin ${{ github.head_ref }}
+          # get the actual source for two branches
+          git checkout origin/${{ github.base_ref }}
+          git checkout origin/${{ github.head_ref }}
+          # get back to the merge commit
+          git checkout ${{ github.sha }}
+      - name: All changed files and puttinng it in file and will be processed
+        run: |
+          
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- aws/approle)       
+            CHANGED_FILES_ARR=($CHANGED_FILES)
+            echo "Processing ........."
+           
+            for i in "${CHANGED_FILES_ARR[@]}"
+                do
+                   if [[ !("$i" == "aws/approle/approle"* )]]; then
+                      echo "files changed are not supported for auto approval will exit" 
+                      exit 0                 
+                   fi
+                  
+                done
+                
+            #Getting files info changed in PR 
+            git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- aws/approle >File
+            # Uncomment below line to find changed files info
+            
+            #cat File   
+            
+            
+            # removing base line with -- and getting remaing info 
+            if grep -q -v '^\-\-' File; then
+                echo "removing diff header"
+                grep -v '^\-\-' File >FilterFile
+            else
+                echo "files changed outside valid directory"
+                exit 1
+            fi
+             
+            #cat FilterFile
+            if grep -q '^\-' FilterFile; then
+                echo "PR contains files with deleted or modified lines!!"
+                exit 1
+            else
+                echo "PR save for labeling and Auto approve!!"
+            fi
+  
+      - name: 'Labeling PR'
+        uses: actions/github-script@0.3.0
+        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['auto-run']
+            })
+      - name: Approve  
+        uses: hmarr/auto-approve-action@v2.0.0
+        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
+        with:
+         github-token: "${{ secrets.GITHUB_TOKEN }}"
+          
+      - name: 'Comment On PR'
+        uses: actions/github-script@0.3.0
+        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
+            github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });
+      - uses: actions/checkout@master
+      - name: merge
+        uses: framer/merge-approved-pull-request-action@master
+        if: github.event_name == 'pull_request' && steps.Check.outputs.status == 'error'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_LABEL: auto-run
+             
