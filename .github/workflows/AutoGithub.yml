@@ -29,7 +29,7 @@ jobs:
                 do
                    if [[ !("$i" == "aws/approle/approle"* )]]; then
                       echo "files changed are not supported for auto approval will exit" 
-                      exit 0                 
+                      exit 1                 
                    fi
                   
                 done
