@@ -11,8 +11,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - run: |
-          git fetch --no-tags --depth=1 origin master
+      - name: commands  
+        run: |
+          git fetch --no-tags origin master
           git checkout -t origin/master
           git checkout pull/1/merge
           git diff master...HEAD
