@@ -67,14 +67,14 @@ jobs:
                 echo "::set-output name=comment::True"
             fi
   
-      - name: 'Comment On PR'
+      - name: 'Comment On Unapproved PR'
         uses: actions/github-script@v3
         if: steps.ConditionCheckStep.outputs.comment != 'True'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |            
             const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-            github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution !📣 PR cannot be auto approved because ⚠️ ${{steps.Pattern.outputs.Check}} ⚠️ ' });
+            github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution !📣 PR cannot be auto approved because ⚠️ ${{steps.ConditionCheckStep.outputs.comment}} ⚠️ ' });
 
       - name: 'Labeling PR'
         uses: actions/github-script@0.3.0
@@ -94,7 +94,7 @@ jobs:
         with:
          github-token: "${{ secrets.GITHUB_TOKEN }}"
           
-      - name: 'Comment On PR'
+      - name: 'Comment On Approved PR'
         uses: actions/github-script@v3
         if: steps.ConditionCheckStep.outputs.comment == 'True'
         with:
