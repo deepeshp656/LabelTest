@@ -1,18 +1,19 @@
-name: Auto Label and Merge
+name: Github Auto PR Label,Approve and Merge
 
 on: [pull_request]
 jobs:
-  AutoLabelandMerge:
+  Auto Label,Approve and Merge:
     runs-on: ubuntu-latest
     env:
+      #####set the PATH to scan File for changes  
       TGT_PATH: 'aws/approle'  
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
  
                
-      # - run: git ls-remote
-      - name: Checkout head and target branch
+      
+      - name: Checkout head and base branch
         id: HeadandTarget
         run: |
           git fetch --no-tags  origin ${{ github.base_ref }}
@@ -22,25 +23,21 @@ jobs:
           git checkout origin/${{ github.head_ref }}
           # get back to the merge commit
           git checkout ${{ github.sha }}
-          #i=$(git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/${{ github.head_ref }})
-          
-          #echo "value of common commit base $i"
-          
+               
 
-          
-      - name: Processing changed files
+      - name: Processing Files Changed in PR
         id: ConditionCheckStep
         run: |            
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
-            echo $CHANGED_FILES
-            echo "only checking with base commit " 
-            [[ ! -z "$CHANGED_FILES" ]] && echo "Not empty" || echo "Empty"                  
+            #####checkpoint 1 : check right files are being fetched in diff
+            #####echo $CHANGED_FILES
             
             echo "Processing ........."
             for i in "${CHANGED_FILES_ARR[@]}"
                 do
-                  
+                   #####Files modified should be of format  "$TGT_PATH/approle"*
+                   
                    if [[ !("$i" == "$TGT_PATH/approle"* )]]; then
                       echo "files changed are not supported for auto approval will exit" 
                       echo "::set-output name=comment::Unintended Files were changed"
@@ -49,14 +46,13 @@ jobs:
                   
                 done
                 
-            #Getting files info changed in PR 
+            #####Getting files info changed in PR 
             git diff --unified=0  remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} -- $TGT_PATH >File
-            # Uncomment below line to find changed files info
+            #####checkpoint 2: check to get only changed files under $TGT_PATH
+            #####cat File   
             
-            cat File   
             
-            
-            # removing base line with -- and getting remaing info 
+            ##### removing base line with -- and getting remaing info 
             if grep -q -v '^\-\-' File; then
                 echo "removing diff header"
                 grep -v '^\-\-' File >FilterFile
@@ -66,20 +62,20 @@ jobs:
                 exit 0
             fi
             
-             
-            #cat FilterFile
+            #####checkpoint 3 : Filter the lines containing changes 
+            #####cat FilterFile
             if grep -q '^\-' FilterFile; then
                 echo "PR contains files with deleted or modified lines!!"
                 echo "::set-output name=comment::Lines were Deleted or Modified"
                 exit 0
             else
                 echo "PR safe for labeling and Auto approve!!"
-                echo "::set-output name=comment::True"
+                echo "::set-output name=comment::Pass"
             fi
   
       - name: 'Comment On Unapproved PR'
         uses: actions/github-script@v3
-        if: steps.ConditionCheckStep.outputs.comment != 'True'
+        if: steps.ConditionCheckStep.outputs.comment != 'Pass'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |            
@@ -88,7 +84,7 @@ jobs:
 
       - name: 'Labeling PR'
         uses: actions/github-script@0.3.0
-        if: steps.ConditionCheckStep.outputs.comment == 'True'
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -100,13 +96,13 @@ jobs:
             })
       - name: Approving PR 
         uses: hmarr/auto-approve-action@v2.0.0
-        if: steps.ConditionCheckStep.outputs.comment == 'True'
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
         with:
          github-token: "${{ secrets.GITHUB_TOKEN }}"
           
       - name: 'Comment On Approved PR'
         uses: actions/github-script@v3
-        if: steps.ConditionCheckStep.outputs.comment == 'True'
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
