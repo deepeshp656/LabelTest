@@ -30,7 +30,7 @@ jobs:
         id: testing
         run: |
           
-          git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }}
+          git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} -- $TGT_PATH
 
             CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}  origin/${{ github.head_ref }})
             echo "Files"
