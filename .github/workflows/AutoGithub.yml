@@ -50,10 +50,10 @@ jobs:
                 done
                 
             #Getting files info changed in PR 
-            git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH >File
+            git diff --unified=0  remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} -- $TGT_PATH >File
             # Uncomment below line to find changed files info
             
-            #cat File   
+            cat File   
             
             
             # removing base line with -- and getting remaing info 
