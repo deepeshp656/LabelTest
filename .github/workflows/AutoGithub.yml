@@ -25,7 +25,7 @@ jobs:
         id: ConditionCheckStep
         run: |
             echo $TGT_PATH
-            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- {{ TGT_PATH) }} )
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- {{ TGT_PATH }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo "Processing ........."
            
