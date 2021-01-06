@@ -2,8 +2,10 @@ name: Auto Label and Merge
 
 on: [pull_request]
 jobs:
-  Check:
+  AutoLabelandMerge:
     runs-on: ubuntu-latest
+    env:
+      TGT_PATH: aws/approle  
     steps:
       # - run: git ls-remote
       - name: Checkout head and target branch
@@ -16,6 +18,7 @@ jobs:
           git checkout origin/${{ github.head_ref }}
           # get back to the merge commit
           git checkout ${{ github.sha }}
+          echo $TGT_PATH
       - name: Processing changed files
         id: ConditionCheckStep
         run: |
