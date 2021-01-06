@@ -5,7 +5,7 @@ jobs:
   AutoLabelandMerge:
     runs-on: ubuntu-latest
     env:
-      TGT_PATH: aws/approle  
+      TGT_PATH: 'aws/approle'  
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
