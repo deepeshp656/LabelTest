@@ -31,12 +31,11 @@ jobs:
       - name: Processing changed files
         id: ConditionCheckStep
         run: |            
-            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH )
+            CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} -- $TGT_PATH )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo $CHANGED_FILES
-            echo "only checking with base commit "
-            git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} -- $TGT_PATH
-            
+            echo "only checking with base commit " 
+            [[ ! -z "$CHANGED_FILES" ]] && echo "Not empty" || echo "Empty"                  
             
             echo "Processing ........."
             for i in "${CHANGED_FILES_ARR[@]}"
