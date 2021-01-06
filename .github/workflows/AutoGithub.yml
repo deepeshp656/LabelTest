@@ -5,9 +5,6 @@ jobs:
   Check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 
-        uses: actions/checkout@v2
-
       # - run: git ls-remote
       - name: Checkout head and target branch
         id: HeadandTarget
