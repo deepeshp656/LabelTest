@@ -22,9 +22,9 @@ jobs:
           git checkout origin/${{ github.head_ref }}
           # get back to the merge commit
           git checkout ${{ github.sha }}
-          i=$(git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/${{ github.head_ref }})
+          #i=$(git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/${{ github.head_ref }})
           
-          echo "value of common commit base $i"
+          #echo "value of common commit base $i"
           
       - name: Checkout head and target branch
         id: testing
