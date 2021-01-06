@@ -26,11 +26,13 @@ jobs:
           
           echo "value of common commit base $i"
           
-          
+      - name: Checkout head and target branch
+        id: testing
+        run: |
           
           git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }}
 
-            CHANGED_FILES=$(git diff  $(git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/${{ github.head_ref }}) origin/${{ github.head_ref }})
+            CHANGED_FILES=$(git diff  $(git merge-base --name-only origin/${{ github.base_ref }}  origin/${{ github.head_ref }})
             echo "Files"
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo "updated"
