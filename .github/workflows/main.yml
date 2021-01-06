@@ -32,7 +32,7 @@ jobs:
           
           git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }}
 
-            CHANGED_FILES=$(git diff  $(git merge-base --name-only origin/${{ github.base_ref }}  origin/${{ github.head_ref }})
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}  origin/${{ github.head_ref }})
             echo "Files"
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo "updated"
