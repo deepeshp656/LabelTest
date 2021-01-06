@@ -14,10 +14,15 @@ jobs:
       - name: Processing changed files
         id: ConditionCheckStep
         run: |
-            git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-            git diff origin/master HEAD
+          git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
+          git fetch --no-tags --depth=1 origin ${{ github.head_ref }}
+          # get the actual source for two branches
+          git checkout origin/${{ github.base_ref }}
+          git checkout origin/${{ github.head_ref }}
+          # get back to the merge commit
+          git checkout ${{ github.sha }}
             echo $TGT_PATH
-            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH )
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} ${{ github.head_ref }} -- $TGT_PATH )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo "Processing ........."
             for i in "${CHANGED_FILES_ARR[@]}"
