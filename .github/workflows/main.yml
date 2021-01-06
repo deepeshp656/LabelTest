@@ -36,4 +36,5 @@ jobs:
             echo "Files"
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo "updated"
+            echo $CHANGED_FILES
             echo "Processing ........."
