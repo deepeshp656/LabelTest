@@ -25,13 +25,13 @@ jobs:
         id: ConditionCheckStep
         run: |
           
-            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }} -- aws/approle)       
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH)       
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo "Processing ........."
            
             for i in "${CHANGED_FILES_ARR[@]}"
                 do
-                   if [[ !("$i" == "aws/approle/approle"* )]]; then
+                   if [[ !("$i" == "$TGT_PATH/approle"* )]]; then
                       echo "files changed are not supported for auto approval will exit" 
                       echo "::set-output name=comment::Unintended Files were changed"
                       exit 0               
@@ -40,7 +40,7 @@ jobs:
                 done
                 
             #Getting files info changed in PR 
-            git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- aws/approle >File
+            git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH >File
             # Uncomment below line to find changed files info
             
             #cat File   
