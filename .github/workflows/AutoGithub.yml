@@ -7,7 +7,7 @@ jobs:
     env:
       TGT_PATH: aws/approle  
     steps:
-	  - name: Checkout 
+      - name: Checkout 
         uses: actions/checkout@v2
       # - run: git ls-remote
       - name: Checkout head and target branch
