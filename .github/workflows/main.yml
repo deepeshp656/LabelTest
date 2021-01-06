@@ -15,8 +15,8 @@ jobs:
       - name: Checkout head and target branch
         id: HeadandTarget
         run: |
-          git fetch --no-tags  origin ${{ github.base_ref }}
-          git fetch --no-tags  origin ${{ github.head_ref }}
+          git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
+          git fetch --no-tags --depth=1 origin ${{ github.head_ref }}
           # get the actual source for two branches
           git checkout origin/${{ github.base_ref }}
           git checkout origin/${{ github.head_ref }}
