@@ -23,7 +23,7 @@ jobs:
           git checkout origin/${{ github.head_ref }}
           # get back to the merge commit
           git checkout ${{ github.sha }}
-          git merge-base ${{ github.base_ref }} {{ github.head_ref }}
+          git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/{{ github.head_ref }}
           
           
           echo $TGT_PATH
