@@ -1,8 +1,8 @@
-name: Auto Label and Merge
+name: Github Auto PR Label,Approve and Merge
 
 on: [pull_request]
 jobs:
-  AutoLabelandMerge:
+  Auto Label,Approve and Merge:
     runs-on: ubuntu-latest
     env:
       TGT_PATH: 'aws/approle'  
