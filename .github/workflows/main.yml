@@ -9,8 +9,7 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+ 
                
       # - run: git ls-remote
       - name: Checkout head and target branch
@@ -29,9 +28,9 @@ jobs:
           
           echo $TGT_PATH
           
+          git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }}
 
-
-            CHANGED_FILES=$(git diff --name-only $(git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/${{ github.head_ref }}) origin/${{ github.head_ref }} -- $TGT_PATH )
+            CHANGED_FILES=$(git diff  $(git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/${{ github.head_ref }}) origin/${{ github.head_ref }})
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo "updated"
             echo "Processing ........."
