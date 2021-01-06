@@ -11,13 +11,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: commands  
-        run: |
-          git fetch --no-tags origin master
-          git checkout -t origin/master
-          git checkout pull/1/merge
-          git diff master...HEAD
-         
+               
       # - run: git ls-remote
       - name: Checkout head and target branch
         id: HeadandTarget
@@ -29,6 +23,7 @@ jobs:
           git checkout origin/${{ github.head_ref }}
           # get back to the merge commit
           git checkout ${{ github.sha }}
+          git merge origin/${{ github.head_ref }} origin/${{ github.base_ref }}
           
           echo $TGT_PATH
             CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH )
