@@ -23,7 +23,8 @@ jobs:
           git checkout origin/${{ github.head_ref }}
           # get back to the merge commit
           git checkout ${{ github.sha }}
-          git merge ${{ github.head_ref }} ${{ github.base_ref }}
+          git merge-base ${{ github.base_ref }} {{ github.head_ref }}
+          
           
           echo $TGT_PATH
             CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH )
