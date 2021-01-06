@@ -102,8 +102,7 @@ jobs:
           script: |
             const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
             github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });
-      - uses: actions/checkout@master
-        if: steps.ConditionCheckStep.outputs.comment == 'True'
+
       - name: merge
         uses: framer/merge-approved-pull-request-action@master
         if: steps.ConditionCheckStep.outputs.comment == 'True'
