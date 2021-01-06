@@ -26,11 +26,12 @@ jobs:
           
           echo "value of common commit base $i"
           
-          echo $TGT_PATH
+          
           
           git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }}
 
             CHANGED_FILES=$(git diff  $(git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/${{ github.head_ref }}) origin/${{ github.head_ref }})
+            echo "Files"
             CHANGED_FILES_ARR=($CHANGED_FILES)
             echo "updated"
             echo "Processing ........."
