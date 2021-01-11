@@ -29,7 +29,10 @@ jobs:
           
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
-        run: |            
+        run: |       
+           #Setting up Variable
+           
+           PattFound = "False"
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
