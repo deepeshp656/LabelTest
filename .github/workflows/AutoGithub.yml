@@ -5,7 +5,7 @@ jobs:
   AutoLabelandMerge:
     runs-on: ubuntu-latest
     env:
-      TGT_PATH: ("aws/approle/approle" "aws/text/aws") 
+      TGT_PATH: aws/approle/approle aws/text/aws
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
                         
-            for i in "${CHANGED_FILES[@]}"
+            for i in "${CHANGED_FILES_ARR[@]}"
                   do
                     echo $i
                   done
