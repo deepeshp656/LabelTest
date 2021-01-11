@@ -5,15 +5,17 @@ jobs:
   AutoLabelandMerge:
     runs-on: ubuntu-latest
     env:
-      TGT_PATH: aws/approle/approle
+      #TGT_PATH can contain multiple path and path/prefix-of-filename seperated with space format ex : shared/access/system/app-role/approle shared/terraform 
+      #in example approle is prefix of files under app-role directory  
+      TGT_PATH: shared/access/system/app-role/approle 
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
  
                
-      # - run: git ls-remote
+     
       - name: Checkout head and base branch
-        id: HeadandTarget
+        id: HeadandBase
         run: |
           git fetch --no-tags  origin ${{ github.base_ref }}
           git fetch --no-tags  origin ${{ github.head_ref }}
@@ -22,79 +24,15 @@ jobs:
           git checkout origin/${{ github.head_ref }}
           # get back to the merge commit
           git checkout ${{ github.sha }}
-          #i=$(git merge-base remotes/origin/${{ github.base_ref }} remotes/origin/${{ github.head_ref }})
           
-          #echo "value of common commit base $i"
           
           
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
-        run: |
-            #Define variable to store result of git diff and state of matching files
-            PattFound="False"      
-            
-            CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
-            
-            #changing format of variable to array 
-            CHANGED_FILES_ARR=($CHANGED_FILES)
-            Path=($TGT_PATH)
-            
-            
-            #iterate each file and match with pattern mentioned in TGT_Files in formate path/prefix-of-file
-            for i in "${CHANGED_FILES_ARR[@]}"
-                  do
-                  
-                     for j in "${Path[@]}"
-                         do	
-                             
-                             #matching files with Path pattern TGT_PATH
-                             if [[ ("$i" == "$j"* )]]; then
-                             
-                                #will exit the loop if matched
-                                PattFound="True"
-                                break
-                             
-                             else
-                             
-                                echo $i
-                                PattFound="False"
-                                
-                             fi
-                         done
-                   
-                     #after each iteration if any files found which is not under the TGT_PATH patter workflow will exit 
-                     if [[ ("$PattFound" == "False" )]]; then
-                          echo "Files changed in PR which cannot be auto-approve"
-                          echo "::set-output name=comment::unintented files changed"
-                          exit 0
-                     fi
-                  done
-                
-            #Getting files info changed in PR 
-            git diff --unified=0 remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} >File
-            # Uncomment below line to find changed files info
-            
-            #cat File   
-            
-            
-            # removing base line with -- and getting remaing info of files changed in PR
-            
-                
-                grep -v '^\-\-' File >FilterFile
-          
-            
-             
-            #cat FilterFile
-            if grep -q '^\-' FilterFile; then
-                echo "PR contains files with deleted or modified lines!!"
-                echo "::set-output name=comment::Lines were Deleted or Modified"
-                exit 0
-            else
-                echo "PR safe for labeling and Auto approve!!"
-                echo "::set-output name=comment::Pass"
-            fi
+        run: ./.github/script/PRFilesCheck.sh
+        
       - name: 'Labeling PR'
-        uses: actions/github-script@0.3.0
+        uses: actions/github-script@v3
         if: steps.ConditionCheckStep.outputs.comment == 'Pass'
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
