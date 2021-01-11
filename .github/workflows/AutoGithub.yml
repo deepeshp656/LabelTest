@@ -30,9 +30,9 @@ jobs:
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
         run: |       
-           #Setting up Variable
-           
-           PattFound = "False"
+            #Setting up Variable
+
+            PattFound =False 
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
@@ -43,10 +43,10 @@ jobs:
                          do	
                           echo "under second loop"
                              if [[ ("$i" == "$j"* )]]; then
-                                PattFound="True"
+                                PattFound=True
                               echo $i	
                              else
-                                PattFound="False"
+                                PattFound=False
                              fi
                          done
                     
