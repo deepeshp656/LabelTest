@@ -5,7 +5,7 @@ jobs:
   AutoLabelandMerge:
     runs-on: ubuntu-latest
     env:
-      TGT_PATH: ("aws/approle/approle" "aws/text/aws") 
+      TGT_PATH: aws/approle/approle aws/text/aws
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
@@ -29,42 +29,43 @@ jobs:
           
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
-        run: |            
+        run: |       
+            #Setting up Variable to match files with path/filename pattern 
+
+            PattFound="False" 
+            
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
-            echo $TGT_PATH
-            echo $Path
-            echo ${Path[@]}
             
             
-            echo ${CHANGED_FILES[@]}
-            echo ${TGT_PATH[@]}
             
-            
-             for i in "${CHANGED_FILES[@]}"
+            for i in "${CHANGED_FILES_ARR[@]}"
                   do
-                    echo $i
-                      for j in "${TGT_PATH[@]}"
+                  
+                     for j in "${Path[@]}"
                          do	
-                            echo $j
+                          
                              if [[ ("$i" == "$j"* )]]; then
                                 PattFound="True"
-                              echo $i	
+                                break
                              else
+                                
                                 PattFound="False"
                              fi
-                           done
-                    
-                     if [[ ("PattFound" == "False" )]]; then
+                         done
+                     echo $PattFound
+                     if [[ ("$PattFound" == "False" )]]; then
+                          echo "Files changed in PR which cannot be auto-approve"
                           echo "::set-output name=comment::unintented files changed"
-                          exit 1
+                          exit 0
                      fi
 
                   done
                 
             #Getting files info changed in PR 
             git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} >File
+            
             # Uncomment below line to find changed files info
             
             #cat File   
