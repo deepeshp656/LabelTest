@@ -33,22 +33,19 @@ jobs:
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
-                        
-          
-            
-            
-             for i in "${CHANGED_FILES_ARR[@]}"
+            for i in "${CHANGED_FILES_ARR[@]}"
                   do
+                  echo "Under first loop"
                      for j in "${path[@]}"
                          do	
-                            echo $j
+                          echo "under second loop"
                              if [[ ("$i" == "$j"* )]]; then
                                 PattFound="True"
                               echo $i	
                              else
                                 PattFound="False"
                              fi
-                           done
+                         done
                     
                      if [[ ("PattFound" == "False" )]]; then
                           echo "::set-output name=comment::unintented files changed"
