@@ -33,13 +33,12 @@ jobs:
             #Setting up Variable to match files with path/filename pattern 
 
             PattFound="False" 
+            
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
-            for i in "${CHANGED_FILES_ARR[@]}"
-                         do	
-                            echo $i
-                         done
+            
+            
             
             for i in "${CHANGED_FILES_ARR[@]}"
                   do
@@ -49,8 +48,7 @@ jobs:
                           
                              if [[ ("$i" == "$j"* )]]; then
                                 PattFound="True"
-                              echo $i	
-                              break
+                                break
                              else
                                 
                                 PattFound="False"
@@ -67,6 +65,7 @@ jobs:
                 
             #Getting files info changed in PR 
             git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} >File
+            
             # Uncomment below line to find changed files info
             
             #cat File   
