@@ -77,15 +77,11 @@ jobs:
             #cat File   
             
             
-            # removing base line with -- and getting remaing info 
-            if grep -q -v '^\-\-' File; then
+            # removing base line with -- and getting remaing info of files changed in PR
+            
                 
                 grep -v '^\-\-' File >FilterFile
-            else
-                echo "files changed outside valid directory"
-                echo "::set-output name=comment::changes made at different location"
-                exit 0
-            fi
+          
             
              
             #cat FilterFile
