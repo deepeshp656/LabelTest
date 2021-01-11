@@ -54,7 +54,7 @@ jobs:
                                 PattFound="False"
                              fi
                          done
-                     echo $PattFound
+                   
                      if [[ ("$PattFound" == "False" )]]; then
                           echo "Files changed in PR which cannot be auto-approve"
                           echo "::set-output name=comment::unintented files changed"
