@@ -34,20 +34,12 @@ jobs:
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
                         
-            for i in "${CHANGED_FILES_ARR[@]}"
-                  do
-                    echo $i
-                  done
-            for i in "${Path[@]}"
-                  do
-                    echo $i
-                  done
+          
             
             
              for i in "${CHANGED_FILES_ARR[@]}"
                   do
-                    echo $i
-                      for j in "${path[@]}"
+                     for j in "${path[@]}"
                          do	
                             echo $j
                              if [[ ("$i" == "$j"* )]]; then
