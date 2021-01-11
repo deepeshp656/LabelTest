@@ -29,43 +29,49 @@ jobs:
           
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
-        run: |       
-            #Setting up Variable to match files with path/filename pattern 
-
-            PattFound="False" 
+        run: |
+            #Define variable to store result of git diff and state of matching files
+            PattFound="False"      
             
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
+            
+            #changing format of variable to array 
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
             
             
-            
+            #iterate each file and match with pattern mentioned in TGT_Files in formate path/prefix-of-file
             for i in "${CHANGED_FILES_ARR[@]}"
                   do
                   
                      for j in "${Path[@]}"
                          do	
-                             echo matching file $i in path $j
+                             
+                             #matching files with Path pattern TGT_PATH
                              if [[ ("$i" == "$j"* )]]; then
+                             
+                                #will exit the loop if matched
                                 PattFound="True"
                                 break
+                             
                              else
+                             
                                 echo $i
                                 PattFound="False"
+                                
                              fi
                          done
                    
+                     #after each iteration if any files found which is not under the TGT_PATH patter workflow will exit 
                      if [[ ("$PattFound" == "False" )]]; then
                           echo "Files changed in PR which cannot be auto-approve"
                           echo "::set-output name=comment::unintented files changed"
                           exit 0
                      fi
-
                   done
                 
             #Getting files info changed in PR 
-            git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} >File
-            
+            git diff --unified=0 remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} >File
             # Uncomment below line to find changed files info
             
             #cat File   
