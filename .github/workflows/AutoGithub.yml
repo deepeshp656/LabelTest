@@ -32,7 +32,7 @@ jobs:
         run: |            
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
-            Path=$TGT_PATH
+            Path=($TGT_PATH)
             echo $TGT_PATH
             echo $Path
             echo ${Path[@]}
