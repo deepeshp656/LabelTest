@@ -32,10 +32,15 @@ jobs:
         run: |       
             #Setting up Variable
 
-            PattFound =False 
+            PattFound=False 
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
+            for i in "${CHANGED_FILES_ARR[@]}"
+                         do	
+                            echo $i
+                         done
+            
             for i in "${CHANGED_FILES_ARR[@]}"
                   do
                   echo "Under first loop"
