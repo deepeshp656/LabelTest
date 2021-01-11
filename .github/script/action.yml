@@ -1,0 +1,18 @@
+# action.yml
+name: 'Check'
+description: 'Gets the TFC run outputs'
+inputs:
+  repo-token:
+    description: "A GitHub token for the repo"
+    required: false
+    default: ${{ github.token }}
+ 
+outputs:
+  status:
+    description: 'Output status'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - --token
+    - ${{ inputs.repo-token }}
