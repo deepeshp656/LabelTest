@@ -33,19 +33,21 @@ jobs:
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
-            echo $TGT_PATH
-            echo $Path
-            echo ${Path[@]}
-            
-            
-            echo ${CHANGED_FILES[@]}
-            echo ${TGT_PATH[@]}
+                        
+            for i in "${CHANGED_FILES[@]}"
+                  do
+                    echo $i
+                  done
+            for i in "${Path[@]}"
+                  do
+                    echo $i
+                  done
             
             
              for i in "${CHANGED_FILES[@]}"
                   do
                     echo $i
-                      for j in "${TGT_PATH[@]}"
+                      for j in "${path[@]}"
                          do	
                             echo $j
                              if [[ ("$i" == "$j"* )]]; then
