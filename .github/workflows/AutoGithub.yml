@@ -45,7 +45,7 @@ jobs:
                   
                      for j in "${Path[@]}"
                          do	
-                          
+                             echo $j
                              if [[ ("$i" == "$j"* )]]; then
                                 PattFound="True"
                                 break
