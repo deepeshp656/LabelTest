@@ -30,7 +30,7 @@ jobs:
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
         run: |       
-            #Setting up Variable
+            #Setting up Variable to match files with path/filename pattern 
 
             PattFound="False" 
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
@@ -52,14 +52,15 @@ jobs:
                               echo $i	
                               break
                              else
-                                echo "$i File is not Supported for auto approval exiting now"
+                                
                                 PattFound="False"
                              fi
                          done
                      echo $PattFound
                      if [[ ("$PattFound" == "False" )]]; then
+                          echo "Files changed in PR which cannot be auto-approve"
                           echo "::set-output name=comment::unintented files changed"
-                          exit 1
+                          exit 0
                      fi
 
                   done
