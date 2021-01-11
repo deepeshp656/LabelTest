@@ -45,7 +45,7 @@ jobs:
                   
                      for j in "${Path[@]}"
                          do	
-                             echo $j
+                             echo matching file $i in path $j
                              if [[ ("$i" == "$j"* )]]; then
                                 PattFound="True"
                                 break
