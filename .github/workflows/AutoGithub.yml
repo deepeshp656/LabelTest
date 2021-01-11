@@ -43,18 +43,19 @@ jobs:
             
             for i in "${CHANGED_FILES_ARR[@]}"
                   do
-                  echo "Under first loop"
+                  
                      for j in "${Path[@]}"
                          do	
-                          echo "under second loop"
+                          
                              if [[ ("$i" == "$j"* )]]; then
                                 PattFound=True
                               echo $i	
                              else
+                                echo "$i File is not Supported for auto approval exiting now"
                                 PattFound=False
                              fi
                          done
-                    
+                     echo $PattFound
                      if [[ ("PattFound" == "False" )]]; then
                           echo "::set-output name=comment::unintented files changed"
                           exit 1
