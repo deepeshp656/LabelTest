@@ -41,16 +41,15 @@ jobs:
                       do	
 
                          if [[ ("$i" == "$j"* )]]; then
-                          PattFound="True"
+                            PattFound="True"
                           echo $i	
                          else
-                         PattFound="False"
+                            PattFound="False"
                          fi
-
-
-
                     done
+                    
                      if [[ ("PattFound" == "False" )]]; then
+                          echo "::set-output name=comment::unintented files changed"
                           exit 1
                      fi
 
