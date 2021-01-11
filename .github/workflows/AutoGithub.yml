@@ -35,16 +35,26 @@ jobs:
             
             
             
-            for i in "${CHANGED_FILES_ARR[@]}"
-                do
-                  
-                   if [[ !("$i" == "$TGT_PATH/approle"* )]]; then
-                      echo "files changed are not supported for auto approval will exit" 
-                      echo "::set-output name=comment::Unintended Files were changed"
-                      exit 0               
-                   fi
-                  
-                done
+             for i in "${CHANGED_FILES[@]}"
+                    do
+                    for j in "${TGT_PATH[@]}"
+                      do	
+
+                         if [[ ("$i" == "$j"* )]]; then
+                          PattFound="True"
+                          echo $i	
+                         else
+                         PattFound="False"
+                         fi
+
+
+
+                    done
+                     if [[ ("PattFound" == "False" )]]; then
+                          exit 1
+                     fi
+
+                  done
                 
             #Getting files info changed in PR 
             git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH >File
