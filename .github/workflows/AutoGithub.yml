@@ -50,7 +50,7 @@ jobs:
                                 PattFound="True"
                                 break
                              else
-                                
+                                echo $i
                                 PattFound="False"
                              fi
                          done
