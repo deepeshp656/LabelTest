@@ -50,13 +50,14 @@ jobs:
                              if [[ ("$i" == "$j"* )]]; then
                                 PattFound="True"
                               echo $i	
+                              break
                              else
                                 echo "$i File is not Supported for auto approval exiting now"
                                 PattFound="False"
                              fi
                          done
                      echo $PattFound
-                     if [[ ("PattFound" == "False" )]]; then
+                     if [[ ("$PattFound" == "False" )]]; then
                           echo "::set-output name=comment::unintented files changed"
                           exit 1
                      fi
