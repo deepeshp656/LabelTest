@@ -30,7 +30,7 @@ jobs:
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
         run: |            
-            CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} -- $TGT_PATH )
+            CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             
             
@@ -56,7 +56,7 @@ jobs:
                   done
                 
             #Getting files info changed in PR 
-            git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- $TGT_PATH >File
+            git diff --unified=0 origin/${{ github.base_ref }} origin/${{ github.head_ref }} >File
             # Uncomment below line to find changed files info
             
             #cat File   
