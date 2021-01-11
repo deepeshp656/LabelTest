@@ -32,7 +32,7 @@ jobs:
         run: |       
             #Setting up Variable
 
-            PattFound=False 
+            PattFound="False" 
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
@@ -47,12 +47,12 @@ jobs:
                      for j in "${Path[@]}"
                          do	
                           
-                             if [[ "$i" == "$j"* ]]; then
-                                PattFound=True
+                             if [[ ("$i" == "$j"* )]]; then
+                                PattFound="True"
                               echo $i	
                              else
                                 echo "$i File is not Supported for auto approval exiting now"
-                                PattFound=False
+                                PattFound="False"
                              fi
                          done
                      echo $PattFound
