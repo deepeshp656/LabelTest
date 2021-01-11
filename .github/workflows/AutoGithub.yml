@@ -11,9 +11,19 @@ jobs:
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
-        with:
-          fetch_depth: 2 
- 
+
+
+
+      - name: Checkout head and base branch
+        id: HeadandBase
+        run: |
+          git fetch --no-tags  origin ${{ github.base_ref }}
+          git fetch --no-tags  origin ${{ github.head_ref }}
+          # get the actual source for two branches
+          git checkout origin/${{ github.base_ref }}
+          git checkout origin/${{ github.head_ref }}
+          # get back to the merge commit
+          git checkout ${{ github.sha }}
           
           
           
