@@ -32,13 +32,15 @@ jobs:
         run: |            
             CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
             CHANGED_FILES_ARR=($CHANGED_FILES)
-            echo CHANGED_FILES_ARR
             
             
+            echo ${CHANGED_FILES[@]}
+            echo ${TGT_PATH[@]}
             
             
              for i in "${CHANGED_FILES[@]}"
                   do
+                    echo $i
                       for j in "${TGT_PATH[@]}"
                          do	
                             echo $j
