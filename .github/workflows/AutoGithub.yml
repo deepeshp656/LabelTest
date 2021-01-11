@@ -10,7 +10,7 @@ jobs:
       TGT_PATH: shared/access/system/app-role/approle 
     steps:
       - name: Checkout 
-        uses: actions/checkout@v2
+        uses: actions/checkout
         with:
           fetch_depth: 2 
           
