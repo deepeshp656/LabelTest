@@ -54,6 +54,6 @@
                 echo "::set-output name=comment::Lines were Deleted or Modified"
                 exit 0
             else
-                echo "PR safe for labeling and Auto approve!!"
+                echo "PR safe for labeling and Auto-approve!!"
                 echo "::set-output name=comment::Pass"
             fi
