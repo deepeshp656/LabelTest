@@ -1,0 +1,56 @@
+name: Github Auto PR Label,Approve and Merge
+
+on: [pull_request]
+jobs:
+  AutoLabelandMerge:
+    runs-on: ubuntu-latest
+    env:
+      #TGT_PATH can contain multiple path and path/prefix-of-filename seperated with space format ex : shared/access/system/app-role/approle shared/terraform 
+      #in example approle is prefix of files under app-role directory  
+      TGT_PATH: shared/access/system/app-role/approle 
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0          
+          
+      - name: Processing Files Changed in PR
+        id: ConditionCheckStep
+        env:
+          BASEBRANCH: ${{ github.base_ref }}
+          HEADBRANCH: ${{ github.head_ref }}
+        run: bash ./.github/script/PRFilesCheckScript.sh
+
+      - name: Labeling PR
+        uses: actions/github-script@v3
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['auto-run']
+            })
+      - name: Approving Labeled PR 
+        uses: hmarr/auto-approve-action@v2.0.0
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
+        with:
+         github-token: "${{ secrets.GITHUB_TOKEN }}"
+          
+      - name: 'Comment On Approved PR'
+        uses: actions/github-script@v3
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
+            github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });
+
+      - name: merge
+        uses: framer/merge-approved-pull-request-action@master
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_LABEL: auto-run
