@@ -19,7 +19,7 @@ for i in  $CHANGED_FILES
   
 	 for j in  $TGT_PATH
 		 do	
-			 	echo $i $j		 
+			echo $i searching  $j		 
 			 #matching files with Path pattern TGT_PATH
 			 if [[ ("$i" == "$j"* )]]; then
 			 
