@@ -4,7 +4,7 @@ PattFound="False"
 
 
 git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" >Changes.txt
-
+CHANGED_FILES=$(git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH")
 #changing format of variable to array 
 Path=($TGT_PATH)
 
@@ -16,10 +16,10 @@ IFS=$'\n'       # make newlines the only separator
 
 
 
-for i in $(cat Changes.txt)
+for i in `echo $CHANGED_FILES`
   do
   
-	 for j in "${($TGT_PATH)[@]}"
+	 for j in "${Path[@]}"
 		 do	
 			 echo searching  $i under path $j			 
 			 #matching files with Path pattern TGT_PATH
