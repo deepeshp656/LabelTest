@@ -94,7 +94,7 @@ jobs:
              
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
-        run: sh ./script.sh
+        run: sh ./script2.sh
         
       - name: 'Labeling PR'
         uses: actions/github-script@v3
