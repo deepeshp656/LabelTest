@@ -2,7 +2,7 @@
 #Define variable to store result of git diff and pattmatch state of matching file            
             PattFound="False"      
             
-            CHANGED_FILES="$(git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" )"
+            CHANGED_FILES=$(git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" )
             
             #changing format of variable to array 
             CHANGED_FILES_ARR=($CHANGED_FILES)
