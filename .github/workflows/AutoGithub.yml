@@ -91,7 +91,9 @@ jobs:
           
       - name: running script
         id: ConditionCheckStep1
-        run: ./script2.sh
+        run: |
+            chmod 777 ./script2.sh
+            ./script2.sh
              
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
