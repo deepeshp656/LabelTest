@@ -9,13 +9,13 @@ cat Change.txt
 CHANGED_FILES="$(git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" )"
 
 #changing format of variable to array 
-CHANGED_FILES_ARR=("${CHANGED_FILES}")
+CHANGED_FILES_ARR=($CHANGED_FILES)
 Path=($TGT_PATH)
 echo $Path
 
 #iterate each file to match with pattern mentioned in TGT_Files in format of path/prefix-of-file or path
 
-for i in ${CHANGED_FILES_ARR}
+for i in "${CHANGED_FILES_ARR[@]}"
   do
   
 	 for j in "${Path[@]}"
