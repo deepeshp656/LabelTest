@@ -1,6 +1,6 @@
 #Define variable to store result of git diff and pattmatch state of matching files
             
-            PattFound="False"      
+PattFound="False"      
             
             CHANGED_FILES=$(git diff --name-only origin/$BaseBranch...origin/$HeadBranch )
             
