@@ -1,7 +1,8 @@
 #Define variable to store result of git diff and pattmatch state of matching files
+            
             PattFound="False"      
             
-            CHANGED_FILES=$(git diff --name-only remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} )
+            CHANGED_FILES=$(git diff --name-only origin/$BaseBranch...origin/$HeadBranch )
             
             #changing format of variable to array 
             CHANGED_FILES_ARR=($CHANGED_FILES)
@@ -38,18 +39,17 @@
                   done
                 
             #Getting info of files changed in PR 
-            git diff --unified=0 remotes/origin/${{ github.base_ref }}...remotes/origin/${{ github.head_ref }} >File
-                    
+           git diff --unified=0 origin/$BaseBranch...origin/$HeadBranch >File.txt
              
             
             
             # removing base line with -- and getting remaing info of the Files changed
                             
-                grep -v '^\-\-' File >FilterFile
+                grep -v '^\-\-' File.txt >FilterFile.txt
            
             
           
-            if grep -q '^\-' FilterFile; then
+            if grep -q '^\-' FilterFile.txt; then
                 echo "PR contains files with deleted or modified lines!!"
                 echo "::set-output name=comment::Lines were Deleted or Modified"
                 exit 0
