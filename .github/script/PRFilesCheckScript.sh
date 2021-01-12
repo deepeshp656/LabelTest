@@ -15,6 +15,15 @@ echo $Path
 
 #iterate each file to match with pattern mentioned in TGT_Files in format of path/prefix-of-file or path
 
+
+IFS=$'\n'       # make newlines the only separator
+for j in $(cat Change.txt)    
+do
+    echo "$j"
+done
+
+
+
 for i in "${CHANGED_FILES_ARR[@]}"
   do
   
