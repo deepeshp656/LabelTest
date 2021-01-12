@@ -19,7 +19,7 @@ Path=($TGT_PATH)
 for i in `echo $CHANGED_FILES`
   do
   
-	 for j in "${Path[@]}"
+	 for j in `echo $TGT_PATH`
 		 do	
 			 echo searching  $i under path $j			 
 			 #matching files with Path pattern TGT_PATH
