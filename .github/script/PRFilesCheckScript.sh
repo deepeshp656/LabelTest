@@ -15,7 +15,7 @@ echo $Path
 
 #iterate each file to match with pattern mentioned in TGT_Files in format of path/prefix-of-file or path
 
-for i in "${CHANGED_FILES_ARR[@]}"
+for i in ${CHANGED_FILES_ARR}
   do
   
 	 for j in "${Path[@]}"
