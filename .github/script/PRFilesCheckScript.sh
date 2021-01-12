@@ -15,10 +15,10 @@
                      
                      for j in "${Path[@]}"
                          do	
-                             
+                             echo searching $i in $j
                              #matching files with Path pattern TGT_PATH
                              if [[ ("$i" == "$j"* )]]; then
-                             	echo $i found in $j
+                             	
                                 #will exit the internal loop if match found
                                 PattFound="True"
                                 break
