@@ -22,6 +22,7 @@ jobs:
           git checkout origin/${{ github.head_ref }}
           # get back to the merge commit
           git checkout ${{ github.sha }}
+          git update-index --chmod=+x ./script2.sh
           
 
 
