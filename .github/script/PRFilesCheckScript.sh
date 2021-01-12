@@ -19,7 +19,7 @@ IFS=$'\n'       # make newlines the only separator
 for i in $(cat Changes.txt)
   do
   
-	 for j in "${Path[@]}"
+	 for j in "${($TGT_PATH)[@]}"
 		 do	
 			 echo searching  $i under path $j			 
 			 #matching files with Path pattern TGT_PATH
