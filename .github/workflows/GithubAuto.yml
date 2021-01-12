@@ -7,7 +7,9 @@ jobs:
     env:
       #TGT_PATH can contain multiple path and path/prefix-of-filename seperated with space format ex : shared/access/system/app-role/approle shared/terraform 
       #in example approle is prefix of files under app-role directory  
-      TGT_PATH: shared/access/system/app-role/approle aws/approle aws/test
+
+      TGT_PATH: shared/access/system/app-role/approle aws/approle aws/test .github/
+
     steps:
       - name: Checkout 
         uses: actions/checkout@v2
