@@ -91,9 +91,13 @@ jobs:
           
       - name: running script
         id: ConditionCheckStep1
+        env:
+          Base:  ${{ github.base_ref }}
+          Head:  ${{ github.head_ref }}
         run: |
             chmod 777 ./script2.sh
             ./script2.sh
+        
              
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
