@@ -7,7 +7,7 @@
             #changing format of variable to array 
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path="($TGT_PATH)"
-            
+	    echo $CHANGED_FILES_ARR            
             
             #iterate each file to match with pattern mentioned in TGT_Files in format of path/prefix-of-file or path
             for i in "${CHANGED_FILES_ARR[@]}"
