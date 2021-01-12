@@ -3,10 +3,8 @@
 PattFound="False"      
 
 
-git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" >Changes.txt
 CHANGED_FILES=$(git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH")
 #changing format of variable to array 
-Path=($TGT_PATH)
 
 
 #iterate each file to match with pattern mentioned in TGT_Files in format of path/prefix-of-file or path
@@ -16,12 +14,12 @@ Path=($TGT_PATH)
 
 
 
-for i in `echo $CHANGED_FILES`
+for i in  $CHANGED_FILES
   do
   
-	 for j in `echo $TGT_PATH`
+	 for j in  $TGT_PATH
 		 do	
-			 echo searching  $i under path $j			 
+			 			 
 			 #matching files with Path pattern TGT_PATH
 			 if [[ ("$i" == "$j"* )]]; then
 			 
