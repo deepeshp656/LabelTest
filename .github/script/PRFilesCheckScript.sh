@@ -12,19 +12,19 @@
             #iterate each file to match with pattern mentioned in TGT_Files in format of path/prefix-of-file or path
             for i in "${CHANGED_FILES_ARR[@]}"
                   do
-                  
+                     
                      for j in "${Path[@]}"
                          do	
                              
                              #matching files with Path pattern TGT_PATH
                              if [[ ("$i" == "$j"* )]]; then
-                             
+                             	echo $i found in $j
                                 #will exit the internal loop if match found
                                 PattFound="True"
                                 break
                              
                              else
-                             
+                            	 
                                 PattFound="False"
                                 
                              fi
