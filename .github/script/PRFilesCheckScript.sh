@@ -5,7 +5,7 @@ PattFound="False"
 
 git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" >Change.txt
 
-cat $Change.txt
+cat Change.txt
 CHANGED_FILES="$(git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" )"
 
 #changing format of variable to array 
