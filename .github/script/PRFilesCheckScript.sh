@@ -12,7 +12,7 @@ Path=($TGT_PATH)
 #iterate each file to match with pattern mentioned in TGT_Files in format of path/prefix-of-file or path
 
 
-IFS=$'\n'       # make newlines the only separator
+       # make newlines the only separator
 
 
 
@@ -43,7 +43,7 @@ for i in `echo $CHANGED_FILES`
 		  exit 0
 	 fi
   done
-unset IFS
+
 #Getting info of files changed in PR 
 git diff --unified=0 origin/"$BASEBRANCH"...origin/"$HEADBRANCH" >File.txt
 		
