@@ -2,6 +2,11 @@
 #Define variable to store result of git diff and pattmatch state of matching file            
 PattFound="False"      
 
+git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" 
+
+git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" >Change.txt
+
+echo $Change.txt
 CHANGED_FILES="$(git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" )"
 
 #changing format of variable to array 
@@ -12,6 +17,7 @@ echo $CHANGED_FILES_ARR
 echo $CHANGED_FILES
 
 #iterate each file to match with pattern mentioned in TGT_Files in format of path/prefix-of-file or path
+
 for i in "${CHANGED_FILES_ARR[@]}"
   do
   
