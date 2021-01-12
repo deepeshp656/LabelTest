@@ -90,7 +90,7 @@ jobs:
           
       - name: running script
         id: ConditionCheckStep1
-        uses: ./script1.sh
+        run: ./script2.sh
              
       - name: Processing Files Changed in PR
         id: ConditionCheckStep
