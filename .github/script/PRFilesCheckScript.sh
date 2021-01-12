@@ -5,7 +5,7 @@
             CHANGED_FILES="$(git diff --name-only origin/"$BASEBRANCH"...origin/"$HEADBRANCH" )"
             
             #changing format of variable to array 
-            CHANGED_FILES_ARR="($CHANGED_FILES)"
+            CHANGED_FILES_ARR=($CHANGED_FILES)
             Path="($TGT_PATH)"
             
             
