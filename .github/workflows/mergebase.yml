@@ -1,13 +1,8 @@
 name: checkout
 
 on:
-  
-  workflow_run:  
-     workflows: 
-        - Github Auto PR Label,Approve and Merge
-     types:
-        - completed
- 
+  pull_request:
+    
 
   
     
