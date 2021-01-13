@@ -20,4 +20,8 @@ jobs:
       - name: Checkout head and target branch
         id: HeadandTarget
         run: |
-         echo " will run after other workflow" 
+          echo sleeping for 100 s
+          sleep 100
+          
+          
+          echo " will run after other workflow" 
