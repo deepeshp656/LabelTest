@@ -2,10 +2,10 @@ name: checkout
 
 on:
   
-  workflow_run:
-  
-     workflows: [ Github Auto PR Label,Approve and Merge]
-     pull_request:
+  workflow_run:  
+     workflows: 
+        - Github Auto PR Label,Approve and Merge
+ 
 
   
     
