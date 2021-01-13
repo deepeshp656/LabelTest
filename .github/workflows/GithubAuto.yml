@@ -1,6 +1,11 @@
 name: Github Auto PR Label,Approve and Merge
 
-on: [pull_request]
+on: 
+   workflow_run:  
+     workflows: 
+        - checkout
+     types:
+        - completed
 jobs:
   AutoLabelandMerge:
     runs-on: ubuntu-latest
