@@ -61,9 +61,11 @@ jobs:
       - name: Wait on tests
         run: echo checkout success
         
-      - name: merge
-        uses: framer/merge-approved-pull-request-action@master
-        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_LABEL: auto-run
+      - name: Automatically Merge PR
+        uses: plm9606/automerge_actions@1.2.2
+        with:
+          # The label name to automatically merge. Default is "automerge".
+          label-name: auto-run
+          # The number of reviewers to automatically merge. Default is 1.
+          reviewers-number: 1
+          github-token: ${{ secrets.GITHUB_TOKEN }}
