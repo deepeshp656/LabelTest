@@ -11,7 +11,7 @@ terraform {
     organization = "Deepesh-Test"
 
     workspaces {
-      name = "Terraform-test2"
+      name = "LabelTest"
     }
   }
  }
