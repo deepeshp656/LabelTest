@@ -33,7 +33,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['auto-run']
+              labels: ['auto-run' 'auto-tfc-apply']
             })
       - name: Approving Labeled PR 
         uses: hmarr/auto-approve-action@v2.0.0
