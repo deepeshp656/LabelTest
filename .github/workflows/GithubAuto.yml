@@ -54,7 +54,7 @@ jobs:
         uses: plm9606/automerge_actions@1.2.3
         with:
           label-name: auto-merge
-          reviewers-number: 1
+          reviewers-number: 0
           github-token: ${{ secrets.GITHUB_TOKEN }}
           auto-delete: true
           merge-method: squash 
