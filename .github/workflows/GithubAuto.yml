@@ -58,8 +58,16 @@ jobs:
           wait-interval: 10
           running-workflow-name: 'checkout' # HERE
          
-      - name: Wait on tests
-        run: echo checkout success
+      - name: githubmerge
+        uses: actions/github-script@v3
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+              const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
+              github.pulls.merge({
+                           owner, repo, issue_number, squash
+                        });
         
       - name: Automatically Merge PR
         uses: plm9606/automerge_actions@1.2.2
