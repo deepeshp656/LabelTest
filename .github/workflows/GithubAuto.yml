@@ -48,30 +48,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-            github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });
-            
+            github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });           
   
-         
-      - name: githubmerge
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            
-              github.pulls.merge({
-                 issue_number: context.issue.number,
-                 owner: context.repo.owner,
-                 repo: context.repo.repo,
-                 merge_method: 'squash'
-                        });
-        
       - name: Automatically Merge PR
-        uses: plm9606/automerge_actions@1.2.2
+        uses: plm9606/automerge_actions@1.2.3
         with:
-          # The label name to automatically merge. Default is "automerge".
           label-name: auto-merge
-          # The number of reviewers to automatically merge. Default is 1.
           reviewers-number: 1
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-delete: "true"
-          merge-method: "squash"  
+          auto-delete: true
+          merge-method: squash 
