@@ -57,7 +57,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-              const { issue: { number: issue_number }, repo: { owner, repo }, merge_method: { string: "squash" } = context;
+              const { issue: { number: issue_number }, repo: { owner, repo } } = context;
+              merge_method='squash'
               github.pulls.merge({
                            owner, repo, issue_number, merge_method
                         });
