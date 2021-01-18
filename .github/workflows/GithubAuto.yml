@@ -55,3 +55,4 @@ jobs:
         with:
            github-token: ${{ secrets.GITHUB_TOKEN }}
            auto-delete: true 
+           label-name:  auto-merge
