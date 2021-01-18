@@ -7,4 +7,4 @@
             CHANGED_FILES_ARR=($CHANGED_FILES)
             Path=($TGT_PATH)
 
-sdasd
+
