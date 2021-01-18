@@ -51,10 +51,18 @@ jobs:
             github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });           
   
       - name: Automatically Merge PR
-        uses: plm9606/automerge_actions@1.2.3
+        uses: actions/github-script@v3
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
         with:
-          label-name: auto-merge
-          reviewers-number: 0
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-delete: true
-          merge-method: squash 
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+              const pullRequest = context.payload.pull_request
+                const repository = context.repo
+
+                await github.pulls.merge({
+                  merge_method: "squash",
+                  owner: repository.owner,
+                  pull_number: pullRequest.number,
+                  repo: repository.repo,
+                })
+
