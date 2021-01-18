@@ -51,7 +51,7 @@ jobs:
             github.issues.createComment({ issue_number, owner, repo, body: 'Thank you for your contribution ! 👋  Congratulation your PR has been approved and will be Merged automatically' });           
   
       - name: Automatically Merge PR
-        uses: actions/AutomergePR@v1
+        uses: actions/AutomergePR@v1.1
         with:
            github-token: ${{ secrets.GITHUB_TOKEN }}
            auto-delete: true 
