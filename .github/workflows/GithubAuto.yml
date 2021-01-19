@@ -73,7 +73,7 @@ jobs:
               const pullRequest = context.payload.pull_request
                 const repository = context.repo
                 await github.git.deleteRef({
-                  ref: ${{ GITHUB_REF }} ,
+                  ref: $GITHUB_REF ,
                   owner: repository.owner,
                   repo: repository.repo,
                 })
