@@ -58,11 +58,23 @@ jobs:
           script: |
               const pullRequest = context.payload.pull_request
                 const repository = context.repo
-
                 await github.pulls.merge({
                   merge_method: "squash",
                   owner: repository.owner,
                   pull_number: pullRequest.number,
+                  repo: repository.repo,
+                })
+      - name: Delete Merge PR
+        uses: actions/github-script@v3
+        if: steps.ConditionCheckStep.outputs.comment == 'Pass'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+              const pullRequest = context.payload.pull_request
+                const repository = context.repo
+                await github.git.deleteRef({
+                  ref: $GITHUB_REF ,
+                  owner: repository.owner,
                   repo: repository.repo,
                 })
 
